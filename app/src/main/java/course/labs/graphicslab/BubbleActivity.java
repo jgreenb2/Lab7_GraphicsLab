@@ -83,16 +83,23 @@ public class BubbleActivity extends Activity {
 				.getStreamVolume(AudioManager.STREAM_MUSIC)
 				/ mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
 
-		// TODO - make a new SoundPool, allowing up to 10 streams 
-		mSoundPool = null;
+		// TODOx - make a new SoundPool, allowing up to 10 streams
+        mSoundPool = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
 
 
-		// TODO - set a SoundPool OnLoadCompletedListener that calls setupGestureDetector()
+		// TODOx - set a SoundPool OnLoadCompletedListener that calls setupGestureDetector()
+        mSoundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+            @Override
+            public void onLoadComplete(SoundPool soundPool, int sampleId,
+                                       int status) {
 
+                setupGestureDetector();
+            }
+        });
 
 		
-		// TODO - load the sound from res/raw/bubble_pop.wav
-		mSoundID = 0;
+		// TODOx - load the sound from res/raw/bubble_pop.wav
+		mSoundID = mSoundPool.load(this,R.raw.bubble_pop,1);
 
 	}
 
@@ -126,6 +133,14 @@ public class BubbleActivity extends Activity {
 				// You can get all Views in mFrame using the
 				// ViewGroup.getChildCount() method
 
+                // check if the down event occurred in a bubble
+                BubbleView bubbleView;
+                for (int bubbleIdx=0;bubbleIdx<mFrame.getChildCount();bubbleIdx++) {
+                    bubbleView = (BubbleView) mFrame.getChildAt(bubbleIdx);
+                    if (insideBubble(event1,bubbleView)) {
+
+                    }
+                }
 
 				
 				
@@ -133,7 +148,13 @@ public class BubbleActivity extends Activity {
 				return false;
 
 			}
+            Boolean insideBubble(MotionEvent ev, BubbleView bv) {
+                float xdist;
+                float ydist;
+                float dist2;
 
+                dist2 = (ev.getX()-xdist)^2 + (ev.getY()-)
+            }
 			// If a single tap intersects a BubbleView, then pop the BubbleView
 			// Otherwise, create a new BubbleView at the tap's location and add
 			// it to mFrame. You can get all views from mFrame with ViewGroup.getChildAt()
