@@ -149,11 +149,11 @@ public class BubbleActivity extends Activity {
 
 			}
             Boolean insideBubble(MotionEvent ev, BubbleView bv) {
-                float xdist;
-                float ydist;
-                float dist2;
+                double dist2;
 
-                dist2 = (ev.getX()-xdist)^2 + (ev.getY()-)
+                dist2 = Math.pow((ev.getX()-bv.mXPos),2) + Math.pow((ev.getY()-bv.mYPos),2);
+
+                return dist2 < bv.mRadiusSquared;
             }
 			// If a single tap intersects a BubbleView, then pop the BubbleView
 			// Otherwise, create a new BubbleView at the tap's location and add
