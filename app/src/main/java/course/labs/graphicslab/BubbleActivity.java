@@ -129,7 +129,7 @@ public class BubbleActivity extends Activity {
 			public boolean onFling(MotionEvent event1, MotionEvent event2,
 					float velocityX, float velocityY) {
 
-				// TODO - Implement onFling actions.
+				// TODOx - Implement onFling actions.
 				// You can get all Views in mFrame using the
 				// ViewGroup.getChildCount() method
 
@@ -137,25 +137,16 @@ public class BubbleActivity extends Activity {
                 BubbleView bubbleView;
                 for (int bubbleIdx=0;bubbleIdx<mFrame.getChildCount();bubbleIdx++) {
                     bubbleView = (BubbleView) mFrame.getChildAt(bubbleIdx);
-                    if (insideBubble(event1,bubbleView)) {
-
+                    if (bubbleView.intersects(event1.getX(),event1.getY())) {
+                        bubbleView.mDx = velocityX;
+                        bubbleView.mDy = velocityY;
+                        return true;
                     }
                 }
-
-				
-				
-				
 				return false;
 
 			}
-            Boolean insideBubble(MotionEvent ev, BubbleView bv) {
-                double dist2;
-
-                dist2 = Math.pow((ev.getX()-bv.mXPos),2) + Math.pow((ev.getY()-bv.mYPos),2);
-
-                return dist2 < bv.mRadiusSquared;
-            }
-			// If a single tap intersects a BubbleView, then pop the BubbleView
+ 			// If a single tap intersects a BubbleView, then pop the BubbleView
 			// Otherwise, create a new BubbleView at the tap's location and add
 			// it to mFrame. You can get all views from mFrame with ViewGroup.getChildAt()
 
@@ -165,19 +156,14 @@ public class BubbleActivity extends Activity {
 				// TODO - Implement onSingleTapConfirmed actions.
 				// You can get all Views in mFrame using the
 				// ViewGroup.getChildCount() method
+                BubbleView bubbleView;
+                for (int bubbleIdx=0;bubbleIdx<mFrame.getChildCount();bubbleIdx++) {
+                    bubbleView = (BubbleView) mFrame.getChildAt(bubbleIdx);
+                    if (bubbleView.intersects(event.getX(),event.getY())) {
 
-
-
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
+                        return true;
+                    }
+                }
 				return false;
 			}
 		});
@@ -352,14 +338,11 @@ public class BubbleActivity extends Activity {
 		private synchronized boolean intersects(float x, float y) {
 
 			// TODO - Return true if the BubbleView intersects position (x,y)
+            double dist2;
 
+            dist2 = Math.pow((x-mXPos),2) + Math.pow((y-mYPos),2);
 
-
-
-			
-			
-			
-		    return false;
+            return dist2 < mRadiusSquared;
 		}
 
 		// Cancel the Bubble's movement
